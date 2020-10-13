@@ -1,0 +1,22 @@
+/* global style */
+
+/* import style variaties */
+@import './variaties.scss';
+
+/* customizing */
+body, h1, h2, h3, h4, h5, h6, p, ul, li, ol, dl, dt, dd {
+    margin: 0;
+    padding: 0;
+}
+
+ul, ol {
+    list-style: none;
+}
+
+body {
+    background-color: #fff;
+}
+
+.bg_color {
+    background-color: $mainbg;
+}
