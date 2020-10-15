@@ -5,23 +5,33 @@ import styles from './index.module.scss'
 
 class Home extends React.Component {
     state = {
-        swiperDate: []
+        swiperDate: [],
+        group: [],
+        newsList: []
+        
     }
     componentDidMount() {
-        // this.$axios
-        //     .get('/home/swiper')
-        //     .then(res => {
-        //         console.log(res);
-        //         this.setState({ swiperDate: res.data.body })
-        //     })
-        this.$axios({
-            type: 'get',
-            url: '/home/swiper'
-        }).then(swiperDate => {
+        this.getSwiper();
+        this.getGroup();
+        this.getNews();
+        
+    }
+    getSwiper = () => {
+        this.$axios.get('/home/swiper').then(swiperDate => {
             // 封装后的axios获取的只有数据，可以将数据直接复制给swiperDate
             this.setState({ swiperDate })
         })
-    }
+    };
+    getGroup = () => {
+        this.$axios.get('/home/groups?area=AREA%7C88cff55c-aaa4-e2e0').then(group => {
+            this.setState({ group })
+        })
+    };
+    getNews = () => {
+        this.$axios.get('/home/news?area=AREA%7C88cff55c-aaa4-e2e0').then(newsList => {
+            this.setState({ newsList })
+        })
+    };
     render () {
         return (
             <>
@@ -46,6 +56,7 @@ class Home extends React.Component {
                     </Carousel>
                     }
                 </div>
+                {/* 首页入口 */}
             </>
         )
     }
