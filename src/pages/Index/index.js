@@ -1,6 +1,7 @@
 import React from 'react'
 import { TabBar } from 'antd-mobile';
 import { Route, Redirect } from "react-router-dom";
+import styles from './index.module.scss'
 
 import Home from "../Home";
 import Find from "../Find";
@@ -17,10 +18,12 @@ class Index extends React.Component {
       return (
         <>
           {/* 路由组件 */}
-          <Redirect exact path="/" to="/home"></Redirect>
-          <Route exact path="/home" component={Home}></Route>
-          <Route path="/home/list" component={Find}></Route>
-          <Route path="/home/profile" component={User}></Route>
+          <div className={styles.index_container}>
+            <Redirect exact path="/" to="/home"></Redirect>
+            <Route exact path="/home" component={Home}></Route>
+            <Route path="/home/list" component={Find}></Route>
+            <Route path="/home/profile" component={User}></Route>
+          </div>
   
           {/* TabBar 组件 */}
           <div style={{ position: 'fixed', height: 50, width: '100%', bottom: 0 }}>
