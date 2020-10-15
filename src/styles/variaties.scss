@@ -2,3 +2,8 @@
 
 $mainbg: #dffff5;
 $maincolor: #f8B500;
+
+/* px to vw, 320*/
+@function pxToVw ($px) {
+    @return ( $px / 320 * 100vw)
+}
