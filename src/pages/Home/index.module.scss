@@ -4,57 +4,6 @@
 
 .index_swiper {
     position: relative;
-
-
-    .search {
-        // 定位
-        position: absolute;
-        top: pxToVw(30);
-        left: 50%;
-        transform: translateX(-50%);
-        width: pxToVw(300);
-        height: pxToVw(34);
-        z-index: 99;
-        // 弹性盒子
-        display: flex;
-
-        .search_bar {
-            display: flex;
-            align-items: center;
-            width: pxToVw(255);
-            background-color: #fff;
-            border-radius: pxToVw(4);
-
-            .bar_city {
-                width: pxToVw(40);
-                border-right: 1px solid #e5e5e5;
-                padding: 0 pxToVw(10);
-                margin-right: pxToVw(10);
-                text-align: center;
-                color: #5e5e5e;
-                i {
-                    font-size: pxToVw(12);
-                }
-            }
-
-            .bar_input {
-                flex: 1;
-                color: #9c9fa1;
-                i {
-                    color: #ffbb12;
-                }
-            }
-        }
-
-        .search_map {
-            flex: 1;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            font-size: pxToVw(24);
-            color: #fff;
-        }
-    }
 }
 
 .swiper_height {

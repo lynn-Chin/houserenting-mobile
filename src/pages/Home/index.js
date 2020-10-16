@@ -6,6 +6,7 @@ import pic1 from '../../assets/images/nav-1.png'
 import pic2 from '../../assets/images/nav-2.png'
 import pic3 from '../../assets/images/nav-3.png'
 import pic4 from '../../assets/images/nav-4.png'
+import Search from '../../components/Search'
 
 
 
@@ -57,16 +58,7 @@ class Home extends React.Component {
                 {/* 轮播图分区 */}
                 <div className={styles.index_swiper}>
                     {/* 搜索框 */}
-                    <div className={styles.search}>
-                        <div className={styles.search_bar}>
-                            <div className={styles.bar_city}>广州<i className="iconfont icon-arrow"></i></div>
-                            <div className={styles.bar_input}>
-                                <i className="iconfont icon-seach"></i>
-                                <span> 请输入区域</span>
-                            </div>
-                        </div>
-                        <i className={`iconfont icon-map ${styles.search_map}`}></i>
-                    </div>
+                    <Search />
                 {  !!this.state.swiperDate.length && 
                     <Carousel
                     autoplay
