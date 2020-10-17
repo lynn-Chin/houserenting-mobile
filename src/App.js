@@ -15,18 +15,18 @@ class App extends React.Component {
   render () {
     return (
       <div className="App">
-        {
-          this.props.city !== '全国' && 
+        
             <HashRouter>
               <Switch>
                 <Route exact path="/" component={Index}></Route>
                 <Route path="/home" component={Index}></Route>
-                <Route path="/map" component={MapFind}></Route>
+                {/* 优化：网速慢的情况下会造成白屏，为减少受影响的页面，只对地图找房页做判断 */}
+                { this.props.city !== '全国' && <Route path="/map" component={MapFind}></Route> }
                 <Route path="/citylist" component={CitySelect}></Route>
                 <Route component={PageNotFound}></Route>
               </Switch>
           </HashRouter>
-        }
+      
 
       </div>
         
