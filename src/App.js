@@ -4,8 +4,9 @@ import Index from './pages/Index';
 import MapFind from './pages/MapFind';
 import CitySelect from './pages/CitySelect';
 import PageNotFound from "./pages/PageNotFound";
-import { GETCITY } from './store/actions/actionType'
+// import { GETCITY } from './store/actions/actionType'
 import { connect } from 'react-redux';
+import { getCityName } from './store/actions/actionCreator';
 
 class App extends React.Component {
   componentDidMount () {
@@ -42,7 +43,7 @@ class App extends React.Component {
 const mapDispatchToProps = (dispatch) => {
   return {
     getCity: () => {
-      dispatch({type: GETCITY, city: '上海'})
+      dispatch(getCityName())
     }
   }
 }
