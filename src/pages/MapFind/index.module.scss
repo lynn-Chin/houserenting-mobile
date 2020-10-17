@@ -1,4 +1,14 @@
-.container {
-    width: 100vw;
-    height: 100vh;
+@import '../../styles/variaties.scss';
+
+.mapfind {
+    :global {
+        .am-navbar-left {
+            color: $maincolor;
+        }
+    }
+
+    .map_box {
+        width: 100vw;
+        height: calc(100vh - 45px);
+    }
 }

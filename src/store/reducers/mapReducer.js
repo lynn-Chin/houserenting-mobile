@@ -1,7 +1,7 @@
 import { GETCITY } from '../actions/actionType'
 
 const defaultVal = {
-    city: '北京'
+    city: '全国'
 }
 
 const mapReducer = ((state = defaultVal, action) => {
