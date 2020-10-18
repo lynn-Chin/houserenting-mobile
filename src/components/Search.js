@@ -5,7 +5,6 @@ import styles from './index.module.scss';
 
 class Search extends React.Component {
     render () {
-        console.log(this.props);
         return (
             <div className={styles.index_swiper}>
                 <div className={styles.search}>
@@ -18,7 +17,7 @@ class Search extends React.Component {
                             </div>
                         {/* react中只有<route component={}></route>的组件才有路由对象 */}
                         {/* 普通对象想要拥有路由对象有两个方法：1. 父组件传入， 2. withRouter */}
-                        <i className={`iconfont icon-map ${styles.search_map}`} onClick={ () => this.props.history.push('/map') }></i>
+                        <i className={`iconfont icon-map ${styles.search_map}`} onClick={ () => this.props.history.push('/mapfind') }></i>
                  </div>
             </div>
         )

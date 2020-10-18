@@ -27,3 +27,11 @@ body {
 .bg_color {
     background-color: $mainbg;
 }
+
+.map_circle {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    font-size: 16px;
+}

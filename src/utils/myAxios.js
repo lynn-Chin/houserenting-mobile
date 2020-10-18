@@ -17,7 +17,6 @@ let axiosCounter = 0;
 myAxios.interceptors.request.use(function (config) {
     // 在发送请求之前显示加载提示
     axiosCounter ++;
-    console.log('提示');
     Toast.loading('加载中...', 0)
     return config;
   }, function (error) {
@@ -30,7 +29,6 @@ myAxios.interceptors.response.use(function (response) {
     axiosCounter --;
 
     if (axiosCounter === 0) {
-        console.log('隐藏');
         //加载组件隐藏
         Toast.hide();
     }
