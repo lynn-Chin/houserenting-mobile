@@ -1,9 +1,37 @@
 @import '../../styles/variaties.scss';
 
 .mapfind {
+    position: relative;
     :global {
         .am-navbar-left {
             color: $maincolor;
+        }
+
+        .map_circle {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            width: 50px;
+            height: 50px;
+            padding: pxToVw(10);
+            background-color: #23bb78;
+            border-radius: 50%;
+            font-size: 16px;
+            font-family: 'Microsoft Yahei';
+            text-align: center;
+            color: #fff;
+            
+            
+        }
+        
+        .map_rect {
+            padding: pxToVw(5);
+            background-color: #23bb78;
+            border-radius: pxToVw(5);
+            font-size: 14px;
+            font-family: 'Microsoft Yahei';
+            color: #fff;
         }
     }
 
@@ -11,4 +39,29 @@
         width: 100vw;
         height: calc(100vh - 45px);
     }
+}
+
+.house_list {
+    position: absolute;
+    left: 0;
+    top: 50vh;
+    bottom: 0;
+    z-index: 100;
+    width: 100vw;
+
+    .house_list_title {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        height: 40px;
+        padding: 0 10px;
+        box-sizing: border-box;
+        background-color: #ccc;
+    }
+
+    .list_content {
+        background-color: #fff;
+        height: calc(50vh - 40px);
+    }
+
 }

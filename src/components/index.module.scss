@@ -1,6 +1,6 @@
 @import '../styles/variaties.scss';
 
-
+/* 定位组件 */
 .search {
     // 定位
     position: absolute;
@@ -48,5 +48,66 @@
         align-items: center;
         font-size: pxToVw(24);
         color: #fff;
+    }
+}
+
+/* 房屋信息组件 */@at-root
+.list_item {
+    display: flex;
+    padding: 20px 0;
+    margin: 0 10px;
+    border-bottom: 1px solid #e4e1e1;
+
+    img {
+        width: 106px;
+        height: 80px;
+    }
+
+    .list_item_info {
+        flex: 1;
+        padding-left: 10px;
+        .info_head {
+            font-size: 14px;
+            font-weight: 700;
+        }
+        .info_subhead {
+            font-size: 12px;
+            color: #afb2b3;
+            padding: 6px 0;
+        }
+
+        .info_tags {
+            display: flex;
+            font-size: 12px;
+
+            .tags_item {
+                padding: 2px 4px;
+                margin-right: 4px;
+
+                &:first-child {
+                    color: #39becd;
+                    background-color: #e1f1f8;
+                    border-radius: 2px;
+                }
+                &:nth-child(2) {
+                    color: #3fc28c;
+                    background-color: #e1f5ed;
+                    border-radius: 2px;
+                }
+                &:nth-child(3) {
+                    color: #cd395e;
+                    background-color: #f8e1e6;
+                    border-radius: 2px;
+                }
+            }
+        }
+
+        .info_price {
+            color: #fa5741;
+            margin-top: 4px;
+            b {
+                font-size: 16px;
+            }
+        }
     }
 }
