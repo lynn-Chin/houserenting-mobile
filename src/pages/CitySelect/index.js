@@ -18,7 +18,9 @@ import { NavBar, Icon } from 'antd-mobile';
 
 class CitySelect extends React.Component {
     state = {
-        cityList: []
+        cityList: [],
+        listTitles: [],
+        activeIndex: 0
     }
     componentDidMount () {
         this.createCityList();
@@ -60,8 +62,18 @@ class CitySelect extends React.Component {
             
         })
 
+        this.getListTitles(list);  
+
         this.setState({ cityList: list})
 
+    };
+    getListTitles = (list) => {
+        const listTitles = list.map(item => item.title);
+        listTitles.splice(0, 2, '#', '热');
+        this.setState({ listTitles })
+    };
+    catalogClicked = (index) => {
+        this.setState({ activeIndex: index})
     };
     rowRenderer = (({ key, index, isScrolling, isVisible, style, }) => {
         const { cityList } = this.state;
@@ -104,7 +116,23 @@ class CitySelect extends React.Component {
                     rowCount={this.state.cityList.length}
                     rowHeight={this.rowHeight}
                     rowRenderer={this.rowRenderer}
+                    scrollToIndex={this.state.activeIndex}
+                    scrollToAlignment={'start'}
                 />
+
+                {/* 右侧目录 */}
+                <div className={styles.catalog}>
+                    {
+                        this.state.listTitles.map((item, index) => 
+                        <span 
+                        key={item} 
+                        onClick={() => { this.catalogClicked(index) }}
+                        className={index === this.state.activeIndex ? styles.active : ''}
+                        >
+                            {item}
+                        </span>)
+                    }
+                </div>
             </>
         )
     }

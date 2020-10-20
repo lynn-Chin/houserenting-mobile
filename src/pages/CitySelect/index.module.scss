@@ -19,3 +19,27 @@
         }
     }
 }
+
+.catalog {
+    position: fixed;
+    top: 50px;
+    bottom: 20px;
+    right: 10px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    font-size: 12px;
+
+    span {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        width: 16px;
+        height: 16px;
+        border-radius: 50%;
+        &.active {
+            background-color: #ffbb12;
+        }
+    }
+
+}
