@@ -63,18 +63,20 @@ class CitySelect extends React.Component {
         })
 
         this.getListTitles(list);  
-
         this.setState({ cityList: list})
 
     };
+    /* 根据已经重写的城市列表，生成目录列表*/
     getListTitles = (list) => {
         const listTitles = list.map(item => item.title);
         listTitles.splice(0, 2, '#', '热');
         this.setState({ listTitles })
     };
+    /* 右侧列表被点击时更改activeIndex, 虚拟列表会跳到相应位置 */
     catalogClicked = (index) => {
         this.setState({ activeIndex: index})
     };
+    /* 虚拟列表的渲染函数 */
     rowRenderer = (({ key, index, isScrolling, isVisible, style, }) => {
         const { cityList } = this.state;
         return (
@@ -95,11 +97,16 @@ class CitySelect extends React.Component {
               </div>
         )
     });
+    /* 根据数据动态设置每一行的高度 */
     rowHeight = ({ index }) => {
         return 36 + 50 * this.state.cityList[index].children.length;
-    }
+    };
+    /* 列表滚动时动态更改activeIndex，以达到与右侧目录同步的效果 */
+    onRowsRendered = ({ overscanStartIndex, overscanStopIndex, startIndex, stopIndex }) => {
+        // console.log(overscanStartIndex, overscanStopIndex, startIndex, stopIndex);
+        this.setState({ activeIndex: startIndex })
+    };
     render () {
-        console.log('render函数打印citylist', this.state.cityList);
         return (
             <>
                 {/* 头部组件 */}
@@ -118,6 +125,7 @@ class CitySelect extends React.Component {
                     rowRenderer={this.rowRenderer}
                     scrollToIndex={this.state.activeIndex}
                     scrollToAlignment={'start'}
+                    onRowsRendered={this.onRowsRendered}
                 />
 
                 {/* 右侧目录 */}
