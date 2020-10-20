@@ -5,7 +5,6 @@ import styles from './index.module.scss'
 const baseURL = myAxios.defaults.baseURL;
 
 function HouseItem (props) {
-    console.log(props);
     return (
         <div className={styles.list_item}>
             <img src={props.houseImg.indexOf('http') == -1 ? baseURL + props.houseImg : props.houseImg} alt="房屋图片" />

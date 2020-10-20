@@ -8,6 +8,7 @@ const { BMap } = window;
 let map;  // 全局声明地图，方便在不同得方法中使用
 let centerName = '';
 let level = 0;
+let Zindex = 0;
 
 class MapFind extends React.Component {
     state = {
@@ -24,7 +25,13 @@ class MapFind extends React.Component {
          *   ✔ 2. 在APP.js中做判断，如果地图是定位获取的城市，才生成路由
          */
         this.newBMap();
-    }
+    };
+    componentWillUnmount () {
+        /* 在组件即将卸载时初始化全局变量，因为这些变量不会随组件卸载 */
+        let centerName = '';
+        let level = 0;
+        let Zindex = 0;
+    };
     newBMap = async () => {
         /* 加载提示 */
         Toast.loading('数据获取中', 0, true);
@@ -37,7 +44,12 @@ class MapFind extends React.Component {
             map.addControl(new BMap.ScaleControl());
         }, 5000);
 
-        /* 请求城市：从返回值中结构除value并改名为id */
+        /* 添加地图拖拽事件： 拖拽时房屋列表消失 */
+        map.addEventListener('dragstart', () => {
+            this.setState({ isShowList: false })
+        })
+
+        /* 请求城市：从返回值中解构出value并改名为id */
         const { value: id} = await this.$axios.get(`/area/info?name=${this.props.city}`)
         // 请求房源：
         const resource = await this.$axios.get(`http://157.122.54.189:9060/area/map?id=${id}`);
@@ -56,11 +68,11 @@ class MapFind extends React.Component {
         // 当前数据层级
         level += 1;
 
-        /* 将地图中心定位中当前区域 */
+        /* 将地图中心定位中当前区域， 并改变显示层级 */
         centerName += this.props.city;
-        map.centerAndZoom(centerName, 11);
+        map.centerAndZoom(centerName, 10 + level);
         
-        /* 遍历 */
+        /* 遍历生成文本标记 */
         sourceList.forEach(item => {
             const { label: areaCenter, value: areaId, coord, count} = item;
 
@@ -92,8 +104,15 @@ class MapFind extends React.Component {
                     this.getLevel3Houses(areaId).then(res => {
                         // 存储房屋数据并显示房屋列表组件
                         this.setState({ houseList: res.list, isShowList: true })
-                        
                     })
+                     /* ⭐将点击位置移动到地图中心 */
+                     console.log(e)
+                     const { clientX, clientY } = e.changedTouches[0];
+                     const x = window.screen.width / 2 - clientX;
+                     const y = window.screen.height / 4 - clientY;
+                     map.panBy(x, y);
+                     /* ⭐被点击的便标记提升z-index */
+                     label.setZIndex(++Zindex);
                 }
             });
 
@@ -112,7 +131,7 @@ class MapFind extends React.Component {
                     <NavBar
                     mode="light"
                     icon={<Icon type="left" />}
-                    onLeftClick={() => console.log('onLeftClick')}
+                    onLeftClick={() => { this.props.history.go(-1) }}
                     >地图找房</NavBar>
 
                     {/* 地图容器 */}
