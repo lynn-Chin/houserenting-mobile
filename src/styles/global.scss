@@ -8,7 +8,7 @@
 /* customizing */
 // 去除邹游防线的按住移动回弹效果，保留上下回弹：左右回弹与轮播图组件冲突
 html {
-    touch-action: pan-y;
+    touch-action: none;
 }
 
 body, h1, h2, h3, h4, h5, h6, p, ul, li, ol, dl, dt, dd {
