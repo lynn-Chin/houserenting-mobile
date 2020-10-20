@@ -66,7 +66,7 @@ class CitySelect extends React.Component {
     rowRenderer = (({ key, index, isScrolling, isVisible, style, }) => {
         const { cityList } = this.state;
         return (
-              <div className={styles.virtList_item} key={key}>
+              <div className={styles.virtList_item} key={key} style={style}>
                   <div className={styles.item_title}>
                     {cityList[index].title}
                   </div>
