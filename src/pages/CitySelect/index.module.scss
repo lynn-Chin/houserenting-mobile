@@ -1,0 +1,18 @@
+:global {
+    .ReactVirtualized__Grid.ReactVirtualized__List {
+        padding: 10px;
+    }
+}
+
+.virtList_item {
+    .item_title {
+        color: #999;
+        line-height: 36px;
+    }
+    .item_child {
+        height: 50px;
+        display: flex;
+        align-items: center;
+        border-bottom: 1px solid #ddd;
+    }
+}
