@@ -74,7 +74,9 @@ class CitySelect extends React.Component {
     };
     /* 右侧列表被点击时更改activeIndex, 虚拟列表会跳到相应位置 */
     catalogClicked = (index) => {
+        console.log(index);
         this.setState({ activeIndex: index})
+        this.ListRef.current.scrollToRow(index);
     };
     /* 虚拟列表的渲染函数 */
     rowRenderer = (({ key, index, isScrolling, isVisible, style, }) => {
@@ -103,11 +105,18 @@ class CitySelect extends React.Component {
     };
     /* 列表滚动时动态更改activeIndex，以达到与右侧目录同步的效果 */
     onRowsRendered = ({ overscanStartIndex, overscanStopIndex, startIndex, stopIndex }) => {
-        // console.log(overscanStartIndex, overscanStopIndex, startIndex, stopIndex);
-        this.setState({ activeIndex: startIndex })
+        
+        if (startIndex === this.state.activeIndex) {
+            // console.log('startindex', startIndex);
+            this.setState({ activeIndex: startIndex })
+        }
     };
+    /* 创建List的ref关联, 使点击目录时列表能够安全滚动到预期位置 */
+    ListRef = React.createRef();
     render () {
+        // console.log('rendered', this.state.activeIndex);
         return (
+            
             <>
                 {/* 头部组件 */}
                 <NavBar
@@ -123,9 +132,10 @@ class CitySelect extends React.Component {
                     rowCount={this.state.cityList.length}
                     rowHeight={this.rowHeight}
                     rowRenderer={this.rowRenderer}
-                    scrollToIndex={this.state.activeIndex}
+                    // scrollToIndex={this.state.activeIndex}
                     scrollToAlignment={'start'}
                     onRowsRendered={this.onRowsRendered}
+                    ref={this.ListRef}
                 />
 
                 {/* 右侧目录 */}
