@@ -1,6 +1,6 @@
 
 import { getCityByBaidu } from '../../utils/mapBaidu';
-import { GETCITY } from './actionType';
+import { CHANGECITY, GETCITY } from './actionType';
 
 export const getCityName = () => {
 
@@ -13,4 +13,8 @@ export const getCityName = () => {
             }
         })
     }
+}
+export const changeCityName = (city) => {
+
+    return { type: CHANGECITY, city}
 }

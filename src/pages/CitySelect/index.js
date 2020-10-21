@@ -4,7 +4,8 @@ import styles from './index.module.scss';
 // 引入react-virtualized需要的组件
 import ReactDOM from 'react-dom';
 import {List} from 'react-virtualized';
-import { NavBar, Icon } from 'antd-mobile';
+import { NavBar, Icon, Toast } from 'antd-mobile';
+import { changeCityName } from '../../store/actions/actionCreator';
 
 /**
  * 难点：将多个数据组合成适合渲染的解构
@@ -29,10 +30,11 @@ class CitySelect extends React.Component {
         const list = [];
 
         /* 当前城市 */
+        const { value} = await this.$axios.get(`/area/info?name=${this.props.city}`)
         list.push({ title: '当前城市', children: [
             {
                 city: this.props.city,
-                value: '1'
+                value
             }
         ]})
         /* 热门城市 */
@@ -78,6 +80,20 @@ class CitySelect extends React.Component {
         this.setState({ activeIndex: index})
         this.ListRef.current.scrollToRow(index);
     };
+    /* 点击列表内的城市名称，切换城市；只有热门城市里的城市可以获取到数据，其他城市提示用户没有数据 */
+    changeCity = (item) => {
+        
+        const hotList = [ ...this.state.cityList[1].children ]
+        console.log(hotList);
+        const index = hotList.findIndex((ele) => ele.city == item.city);
+
+        if (index === -1) {
+            Toast.info('该城市房源获取中，请期待…')
+        } else {
+            this.props.changeCityName(item.city);
+            this.props.history.push('/home');
+        }
+    };
     /* 虚拟列表的渲染函数 */
     rowRenderer = (({ key, index, isScrolling, isVisible, style, }) => {
         const { cityList } = this.state;
@@ -88,7 +104,7 @@ class CitySelect extends React.Component {
                   </div>
                   {
                       cityList[index].children.map(item =>  {
-                        return <div className={styles.item_child} key={item.value} onClick={ () => { console.log(item)}}>
+                        return <div className={styles.item_child} key={item.value} onClick={ () => { this.changeCity(item)}}>
                             { item.city }
                         </div>
                     })
@@ -160,4 +176,12 @@ const mapStateToProps = (state) => {
     return { ...state }
 }
 
-export default connect(mapStateToProps)(CitySelect);
+const mapDispatchToProps = (dispatch) => {
+    return {
+        changeCityName: (city) => {
+            dispatch(changeCityName(city))
+        }
+    }
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(CitySelect);
