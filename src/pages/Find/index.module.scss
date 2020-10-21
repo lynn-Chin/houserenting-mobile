@@ -1,0 +1,25 @@
+@import '../../styles/variaties.scss';
+
+.header {
+    width: 100vw;
+    height: 45px;
+    display: flex;
+    align-items: center;
+    background-color: $mainbg;
+
+    :global {
+        .am-icon-left {
+            padding: 0 6px;
+        }
+    }
+
+    .find_house {
+        position: static;
+        left: 0;
+        transform: translateX(0);
+        flex: 1;
+        i.icon-map {
+            color: $maincolor;
+        }
+    }   
+}

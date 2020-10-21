@@ -11,7 +11,7 @@ import User from "../User";
 class Index extends React.Component {
     // 生命周期函数 render
     render() {
-      console.log('路由对象打印测试', this.props);
+      // console.log('路由对象打印测试', this.props);
       // 解构用于做路由对象的 history 和 location
       // history.push(用于跳转页面)   history.
       const { history, location } = this.props;
