@@ -18,8 +18,28 @@
         left: 0;
         transform: translateX(0);
         flex: 1;
-        i.icon-map {
-            color: $maincolor;
-        }
     }   
+}
+
+.find_filter {
+    width: 100vw;
+    height: 40px;
+    display: flex;
+    border-bottom: 1px solid #e4e6f0;
+
+    .find_filter_item {
+        flex: 1;
+        height: 40px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        // font-size: 18px;
+        color: #333;
+       
+            i {
+                color: #bbb;
+                font-size: 12px;
+            }
+       
+    }
 }
