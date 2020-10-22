@@ -21,11 +21,30 @@
     }   
 }
 
+.mask {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    opacity: 0.5;
+    background-color: #000;
+    z-index: 100;
+    &.mask_hidden {
+        z-index: -2;
+    }
+}
+
 .find_filter {
     width: 100vw;
     height: 40px;
     display: flex;
     border-bottom: 1px solid #e4e6f0;
+    position: relative;
+    background-color: #fff;
+    &.filters_active {
+        z-index: 101;
+    }
 
     .find_filter_item {
         flex: 1;
@@ -35,11 +54,54 @@
         align-items: center;
         // font-size: 18px;
         color: #333;
+
+        &.filter_active_tab {
+            color: #21b97a;
+        }
        
-            i {
-                color: #bbb;
-                font-size: 12px;
-            }
+        i {
+            color: #bbb;
+            font-size: 12px;
+        }
        
     }
+
+    .picker_box {
+        position: absolute;
+        top: 41px;
+        width: 100vw;
+        height: 220px;
+        background-color: #fff;
+        
+        .picker_box_btn {
+            width: 100vw;
+            height: 40px;
+            display: flex;
+
+            button {
+                border: none;
+                border-top: 1px solid #eee;
+
+                &.picker_cancel {
+                    flex: 2;
+                    color: #21b97a;
+                    background-color: #fff;
+                }
+                &.picker_confirm {
+                    flex: 3;
+                    color: #fff;
+                    background-color: #21b97a;
+                }
+            }
+
+            
+        }
+    }
+}
+
+.house_list {
+    width: 100vw;
+    background-color: #fff;
+    height: calc(100vh - 135px);
+    overflow-y: visible;
 }
