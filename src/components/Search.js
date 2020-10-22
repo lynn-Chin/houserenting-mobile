@@ -5,7 +5,6 @@ import styles from './index.module.scss';
 
 class Search extends React.Component {
     render () {
-        console.log(this.props.className);
         return (
                 // 在父组件引入组件后，使用类名，需要在子组件内通过this.props接收，然后添加给子组件
                 <div className={[styles.search, this.props.className].join(' ')}>
