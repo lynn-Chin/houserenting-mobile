@@ -18,10 +18,74 @@ class Find extends React.Component {
         pickerData: [],
         moreFilterCondition: [],
         activeFilterIndex: -1,
-        selectedFilters: [[], [], [], []]
+        selectedFilters: [[], [], [], []],
+        cityID: '',
+        houseList: []
+    };
+    /* 发动请求获取房屋列表 */
+    getHouseList = async () => {
+        const params = this.getReqParams();
+        const { cityID } = this.state;
+        const { list } = await this.$axios.get('/houses', { params: { cityID, ...params }});
+        // console.log(houseList);
+        this.setState({ houseList: list });
+        this.hideFilters();
+    };
+    /* 根据已有的selectedFilters 数据，生成格式正确的请求参数 */
+    getReqParams = () => {
+        /**
+         * ✨已有数据和期望数据格式
+         * 1. 区域 ['area', 'xxxx', 'xxxxx]  🛠  area: xxx
+         * 2. 方式 ['sss']  🛠  rentType: sss
+         * 3. 价格 ['sss']  🛠  price: sss
+         * 4. 更多筛选条件 ['aaa'. 'aaa', 'aaa']    🛠  more: aaa,aaa,aaa
+         */
+         const { selectedFilters } = this.state;
+
+         const key = selectedFilters[0][0];
+         const value = ['null', undefined].includes(selectedFilters[0][2]) ? selectedFilters[0][1] : selectedFilters[0][2];
+         console.log(key, value);
+        
+         const params = {
+             [key]: value,
+             rentType: selectedFilters[1][0],
+             price: selectedFilters[2][0],
+             more: selectedFilters[3].join(',')
+         }
+
+         return params;
+    };
+    /* pickerview改变时，更新selectedFilters数据 */
+    pickerViewChange = (value) => {
+        const { activeFilterIndex, selectedFilters } = this.state;
+        selectedFilters[activeFilterIndex] = value;
+
+        this.setState({ selectedFilters }, () => {
+            console.log(this.state);
+        })
+    };
+    clearMoreFilters = () => {
+        const selectedFilters = [ ...this.state.selectedFilters ];
+        selectedFilters[3] = [];
+        this.setState({ selectedFilters });
+        this.hideFilters();
     };
     addMoreFilters = (val) => {
         console.log(val);
+        const selectedFilters = [...this.state.selectedFilters];
+
+        const index = selectedFilters[3].findIndex(item => item === val);
+
+        if (index === -1) {
+            // 不存在则添加
+            selectedFilters[3].push(val);
+        } else {
+            // 存在则删除
+            selectedFilters[3].splice(index, 1);
+        }
+
+        this.setState({ selectedFilters });
+        
     };
     hideFilters =() => {
         this.setState({ activeFilterIndex: -1})
@@ -31,6 +95,7 @@ class Find extends React.Component {
     };
     componentDidMount () {
         this.getHouseConditions();
+        this.getHouseList();
         
     };
     getHouseConditions = async () => {
@@ -51,8 +116,62 @@ class Find extends React.Component {
             { title: '亮点', children: characteristic} 
         ]
 
-        this.setState({ pickerData, moreFilterCondition })
+        this.setState({ pickerData, moreFilterCondition, cityID: areaID})
     }
+    renderFilterBox = () => {
+        const { activeFilterIndex } = this.state;
+
+        switch (activeFilterIndex) {
+            case 0:
+            case 1:
+            case 2:
+                return <div className={styles.picker_box}>
+                            <PickerView 
+                                data={this.state.pickerData[this.state.activeFilterIndex]}
+                                cols={this.state.filters[this.state.activeFilterIndex].cols}
+                                cascade
+                                onChange={(val) => this.pickerViewChange(val)}
+                                // value必写，不然添加onChange事件。滚动选中会立马退回到不限
+                                value={this.state.selectedFilters[this.state.activeFilterIndex]}
+                            />
+                            <div className={styles.picker_box_btn}>
+                                <button className={styles.picker_cancel} onClick={this.hideFilters}>取消</button>
+                                <button className={styles.picker_confirm} onClick={this.getHouseList}>确认</button>
+                            </div>
+                        </div>
+            case 3:
+                return <div className={styles.more_condition}>
+                            <div className={styles.condition_box}>
+                                {
+                                    this.state.moreFilterCondition.map(item => {
+                                        return (<Fragment key={item.title}>
+                                            {/* Fragment标签与<>便签的区别：Fragment标签可以设置key值 */}
+                                            <div className={styles.item_header}>{ item.title }</div>
+                                            <div className={styles.item_choices}>
+                                                {
+                                                    item.children.map(val => <span 
+                                                        onClick={() => {this.addMoreFilters(val.value)}}
+                                                        className={[
+                                                            styles.item_choice_tag, 
+                                                            this.state.selectedFilters[3].includes(val.value) ? styles.active_tag : '']
+                                                            .join(' ')} 
+                                                        key={val.value}>{ val.label }
+                                                        </span>)
+                                                }
+                                            </div>
+                                        </Fragment>)
+                                    })
+                                }
+                            </div>
+                            <div className={styles.more_condition_btn}>
+                                <button className={styles.picker_cancel} onClick={this.clearMoreFilters}>清除</button>
+                                <button className={styles.picker_confirm} onClick={this.hideFilters}>确认</button>
+                            </div>
+                        </div>
+            default:
+                return <></>
+        }
+    };
     render () {
         return (
             <>
@@ -81,64 +200,24 @@ class Find extends React.Component {
                             className={[
                                 styles.find_filter_item, 
                                 item.index === this.state.activeFilterIndex ? styles.filter_active_tab : ''].join(' ')} 
-                            key={ item.id }>
+                            key={ item.name }>
                                 { item.name }<i className="iconfont icon-arrow"></i>
                             </span>)
                     }
-
-                    {/* pickerView  */}
-                    {
-                        this.state.activeFilterIndex > -1 && this.state.activeFilterIndex  < 3 && 
-                        <div className={styles.picker_box}>
-                            <PickerView 
-                                data={this.state.pickerData[this.state.activeFilterIndex]}
-                                cols={this.state.filters[this.state.activeFilterIndex].cols}
-                                cascade
-                            />
-                            <div className={styles.picker_box_btn}>
-                                <button className={styles.picker_cancel} onClick={this.hideFilters}>取消</button>
-                                <button className={styles.picker_confirm}>确认</button>
-                            </div>
-                        </div>
-                    }
-
-                    {/* 更多筛选 */}
-                    {
-                        this.state.activeFilterIndex === 3 && 
-                        <div className={styles.more_condition}>
-                            <div className={styles.condition_box}>
-                                {
-                                    this.state.moreFilterCondition.map(item => {
-                                        return (<Fragment key={item.title}>
-                                            {/* Fragment标签与<>便签的区别：Fragment标签可以设置key值 */}
-                                            <div className={styles.item_header}>{ item.title }</div>
-                                            <div className={styles.item_choices}>
-                                                {
-                                                    item.children.map(val => <span 
-                                                        onClick={() => {this.addMoreFilters(val.value)}}
-                                                        className={styles.item_choice_tag} 
-                                                        key={val.value}>{ val.label }
-                                                        </span>)
-                                                }
-                                            </div>
-                                        </Fragment>)
-                                    })
-                                }
-                            </div>
-                            <div className={styles.more_condition_btn}>
-                                <button className={styles.picker_cancel} onClick={this.hideFilters}>取消</button>
-                                <button className={styles.picker_confirm}>确认</button>
-                            </div>
-                        </div>
-                    }
+                    {/* pickerView  */} {/* 更多筛选 */}
+                    {this.renderFilterBox()}
                     
                 </div>
+
                 {/* 列表 */}
-                <div className={styles.house_list}>
-                    {
-                        [12, 34, 5, 56,78,6778, 87].map(item => <HouseItem key={item} { ...fakeHouseData }/>)
-                    }
-                </div>
+                {
+                    this.state.houseList.length > 0 && 
+                    <div className={styles.house_list}>
+                        {
+                            this.state.houseList.map(item => <HouseItem key={item} { ...item }/>)
+                        }
+                    </div>
+                }
             </>
         )
     }
