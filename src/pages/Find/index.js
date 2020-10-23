@@ -143,23 +143,23 @@ class Find extends React.Component {
                 return <div className={styles.more_condition}>
                             <div className={styles.condition_box}>
                                 {
-                                    this.state.moreFilterCondition.map(item => {
-                                        return (<Fragment key={item.title}>
-                                            {/* Fragment标签与<>便签的区别：Fragment标签可以设置key值 */}
-                                            <div className={styles.item_header}>{ item.title }</div>
-                                            <div className={styles.item_choices}>
-                                                {
-                                                    item.children.map(val => <span 
-                                                        onClick={() => {this.addMoreFilters(val.value)}}
-                                                        className={[
-                                                            styles.item_choice_tag, 
-                                                            this.state.selectedFilters[3].includes(val.value) ? styles.active_tag : '']
-                                                            .join(' ')} 
-                                                        key={val.value}>{ val.label }
-                                                        </span>)
-                                                }
-                                            </div>
-                                        </Fragment>)
+                                    this.state.moreFilterCondition.map((item, i) => {
+                                        return (<Fragment key={i}>
+                                                    {/* Fragment标签与<>便签的区别：Fragment标签可以设置key值 */}
+                                                    <div className={styles.item_header}>{ item.title }</div>
+                                                    <div className={styles.item_choices}>
+                                                        {
+                                                            item.children.map((val, index) => <span 
+                                                                onClick={() => {this.addMoreFilters(val.value)}}
+                                                                className={[
+                                                                    styles.item_choice_tag, 
+                                                                    this.state.selectedFilters[3].includes(val.value) ? styles.active_tag : '']
+                                                                    .join(' ')} 
+                                                                key={index}>{ val.label }
+                                                                </span>)
+                                                        }
+                                                    </div>
+                                                </Fragment>)
                                     })
                                 }
                             </div>
@@ -176,11 +176,7 @@ class Find extends React.Component {
 
         const { houseList } = this.state;
         return (
-            <>
-                {
-                    houseList.map(item => <HouseItem key={item.houseCode} { ...item }/>)
-                }
-            </>
+                    <HouseItem key={key} { ...houseList[index] }/>
         )
     };
     render () {
