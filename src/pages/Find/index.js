@@ -1,5 +1,5 @@
 import { Icon, PickerView } from 'antd-mobile'
-import React from 'react'
+import React, { Fragment } from 'react'
 import styles from './index.module.scss'
 import Search from '../../components/Search'
 import HouseItem from '../../components/HouseItem'
@@ -17,7 +17,11 @@ class Find extends React.Component {
         ],
         pickerData: [],
         moreFilterCondition: [],
-        activeFilterIndex: -1
+        activeFilterIndex: -1,
+        selectedFilters: [[], [], [], []]
+    };
+    addMoreFilters = (val) => {
+        console.log(val);
     };
     hideFilters =() => {
         this.setState({ activeFilterIndex: -1})
@@ -40,7 +44,12 @@ class Find extends React.Component {
         pickerData[0] = [area, subway];
         pickerData[1] = rentType;
         pickerData[2] = price;
-        const moreFilterCondition = [ roomType, floor, oriented, characteristic ]
+        const moreFilterCondition = [ 
+            { title: '房型', children: roomType }, 
+            { title: '楼层', children: floor }, 
+            { title: '朝向', children: oriented }, 
+            { title: '亮点', children: characteristic} 
+        ]
 
         this.setState({ pickerData, moreFilterCondition })
     }
@@ -65,6 +74,7 @@ class Find extends React.Component {
                     styles.find_filter,
                     this.state.activeFilterIndex > -1 ? styles.filters_active : ''].join(' ')
                 }>
+                    {/* 筛选按钮 */}
                     {
                         this.state.filters.map(item => <span 
                             onClick={() => { this.changeIndex(item.index) }}
@@ -75,6 +85,7 @@ class Find extends React.Component {
                                 { item.name }<i className="iconfont icon-arrow"></i>
                             </span>)
                     }
+
                     {/* pickerView  */}
                     {
                         this.state.activeFilterIndex > -1 && this.state.activeFilterIndex  < 3 && 
@@ -85,6 +96,36 @@ class Find extends React.Component {
                                 cascade
                             />
                             <div className={styles.picker_box_btn}>
+                                <button className={styles.picker_cancel} onClick={this.hideFilters}>取消</button>
+                                <button className={styles.picker_confirm}>确认</button>
+                            </div>
+                        </div>
+                    }
+
+                    {/* 更多筛选 */}
+                    {
+                        this.state.activeFilterIndex === 3 && 
+                        <div className={styles.more_condition}>
+                            <div className={styles.condition_box}>
+                                {
+                                    this.state.moreFilterCondition.map(item => {
+                                        return (<Fragment key={item.title}>
+                                            {/* Fragment标签与<>便签的区别：Fragment标签可以设置key值 */}
+                                            <div className={styles.item_header}>{ item.title }</div>
+                                            <div className={styles.item_choices}>
+                                                {
+                                                    item.children.map(val => <span 
+                                                        onClick={() => {this.addMoreFilters(val.value)}}
+                                                        className={styles.item_choice_tag} 
+                                                        key={val.value}>{ val.label }
+                                                        </span>)
+                                                }
+                                            </div>
+                                        </Fragment>)
+                                    })
+                                }
+                            </div>
+                            <div className={styles.more_condition_btn}>
                                 <button className={styles.picker_cancel} onClick={this.hideFilters}>取消</button>
                                 <button className={styles.picker_confirm}>确认</button>
                             </div>

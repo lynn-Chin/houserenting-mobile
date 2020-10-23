@@ -42,6 +42,7 @@
     border-bottom: 1px solid #e4e6f0;
     position: relative;
     background-color: #fff;
+    overflow: visible;
     &.filters_active {
         z-index: 101;
     }
@@ -93,8 +94,80 @@
                     background-color: #21b97a;
                 }
             }
+        }
+    }
 
-            
+    .more_condition {
+        position: fixed;
+        top: 0;
+        bottom: 0;
+        right: 0;
+        left: 20%;
+        z-index: 101;
+        height: 100vh;
+        padding-bottom: 40px;
+        background-color: #fff;
+        box-sizing: border-box;
+        
+
+        .condition_box {
+            width: 100%;
+            height: 100%;
+            overflow: scroll;
+            padding: 0 12px;
+        }
+        .item_header {
+            font-size: 16px;
+            margin: 20px 0;
+        }
+        .item_choices {
+            display: flex;
+            flex-wrap: wrap;
+            .item_choice_tag {
+                width: 60px;
+                height: 30px;
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                border: 1px solid #ddd;
+                border-radius: 6px;
+                margin: 0 15px 15px 0;
+                color: #888;
+                font-size: 12px;
+                
+                &.active_tag {
+                    color: #21b97a;
+                    background-color: #defaef;
+                    border: 1px solid #21b97a;
+                }
+            }
+        }
+
+        .more_condition_btn {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            height: 40px;
+            display: flex;
+            z-index: 102;
+
+            button {
+                border: none;
+                border-top: 1px solid #eee;
+
+                &.picker_cancel {
+                    flex: 2;
+                    color: #21b97a;
+                    background-color: #fff;
+                }
+                &.picker_confirm {
+                    flex: 3;
+                    color: #fff;
+                    background-color: #21b97a;
+                }
+            }
+        
         }
     }
 }
@@ -102,6 +175,8 @@
 .house_list {
     width: 100vw;
     background-color: #fff;
-    height: calc(100vh - 135px);
-    overflow-y: visible;
+    min-height: calc(100vh - 136px);
+    // overflow-y: visible;
+    
+    
 }
