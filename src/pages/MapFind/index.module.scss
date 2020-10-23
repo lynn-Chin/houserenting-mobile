@@ -48,6 +48,7 @@
     bottom: 0;
     z-index: 100;
     width: 100vw;
+    
 
     .house_list_title {
         display: flex;
@@ -56,12 +57,14 @@
         height: 40px;
         padding: 0 10px;
         box-sizing: border-box;
-        background-color: #ccc;
+        background-color: $mainbg;
     }
 
     .list_content {
+        width: 100%;
         background-color: #fff;
         height: calc(50vh - 40px);
+        overflow: auto;
     }
 
 }

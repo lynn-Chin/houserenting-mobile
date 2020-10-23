@@ -43,3 +43,12 @@ body {
 
     border-radius: 10px;
 }
+
+
+.am-navbar-light {
+    background-color: $mainbg;
+
+    .am-icon-left {
+        color: $maincolor;
+    }
+}
