@@ -1,11 +1,11 @@
 import { Icon, PickerView } from 'antd-mobile'
 import React, { Fragment } from 'react'
 import styles from './index.module.scss'
+import {List} from 'react-virtualized';
 import Search from '../../components/Search'
 import HouseItem from '../../components/HouseItem'
 import { connect } from 'react-redux'
 
-const fakeHouseData = { houseImg: 'https://api-haoke-web.itheima.net/newImg/7bjjanc6g.jpg', title: '合租 · 鑫苑鑫都汇 4室1厅', desc: '四室/110/南/鑫苑鑫都汇', tags: ['近地铁']}
 
 class Find extends React.Component {
     state = {
@@ -165,12 +165,23 @@ class Find extends React.Component {
                             </div>
                             <div className={styles.more_condition_btn}>
                                 <button className={styles.picker_cancel} onClick={this.clearMoreFilters}>清除</button>
-                                <button className={styles.picker_confirm} onClick={this.hideFilters}>确认</button>
+                                <button className={styles.picker_confirm} onClick={this.getHouseList}>确认</button>
                             </div>
                         </div>
             default:
                 return <></>
         }
+    };
+    rowRenderer = ({ key, index, isScrolling, isVisible, style, }) => {
+
+        const { houseList } = this.state;
+        return (
+            <>
+                {
+                    houseList.map(item => <HouseItem key={item.houseCode} { ...item }/>)
+                }
+            </>
+        )
     };
     render () {
         return (
@@ -211,11 +222,20 @@ class Find extends React.Component {
 
                 {/* 列表 */}
                 {
-                    this.state.houseList.length > 0 && 
+                    this.state.houseList.length > 0 ?
                     <div className={styles.house_list}>
-                        {
-                            this.state.houseList.map(item => <HouseItem key={item} { ...item }/>)
-                        }
+                        <List
+                            width={window.screen.width}
+                            height={window.screen.height - 135}
+                            rowCount={this.state.houseList.length}
+                            rowHeight={123}
+                            rowRenderer={this.rowRenderer}
+                        />
+                    </div>
+                    :
+                    <div className={styles.noData}>
+                        <img src="https://api-haoke-web.itheima.net/img/not-found.png" alt="暂无数据"></img>
+                        找到房源，换个条件试试？
                     </div>
                 }
             </>
